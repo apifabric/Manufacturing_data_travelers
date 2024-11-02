@@ -1,0 +1,51 @@
+<o-form-layout-manager attr="AdhesiveUsage" mode="tab" title="ADHESIVEUSAGE">
+    <div fxFill fxLayout="column" fxLayoutAlign="start">
+        <o-table 
+            attr="AdhesiveUsageTable" 
+            service="AdhesiveUsage" 
+            entity="AdhesiveUsage" 
+            title="ADHESIVEUSAGE"
+            keys="id"
+            columns="id;device_assembly_id;lot_id;quantity_used" 
+            header-actions="R;D"
+            visible-columns="id;device_assembly_id;lot_id;quantity_used"  
+            sort-columns="id" 
+            query-rows="20" 
+            quick-filter="yes"
+            row-height="medium" 
+            select-all-checkbox="true" 
+            pageable="yes"  
+            auto-adjust="true" 
+            virtual-scroll="yes" 
+            edition-mode="dblclick"
+            horizontal-scroll="yes"
+            show-title="yes"
+            export-button="yes">
+            
+            <o-table-column #id attr="id" title=" id*" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+            
+            <o-table-column attr="device_assembly_id" title="device_assembly_id">
+    <o-table-cell-renderer-service attr="device_assembly_id" 
+        service="DeviceAssembly" entity="DeviceAssemblyType" columns="id;id"
+        parent-keys="id:device_assembly_id"
+        value-column="id" keys="device_assembly_id"
+        visible-columns="id" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-column attr="lot_id" title="lot_id">
+    <o-table-cell-renderer-service attr="lot_id" 
+        service="Lot" entity="LotType" columns="id;id"
+        parent-keys="id:lot_id"
+        value-column="id" keys="lot_id"
+        visible-columns="id" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-column #quantity_used attr="quantity_used" title="quantity_used" type="integer" editable="no" required="yes" content-align="center"></o-table-column>
+            
+            <o-table-context-menu></o-table-context-menu>
+            <o-table-paginator page-size-options="24;48;96"></o-table-paginator>
+        </o-table>
+    </div>
+</o-form-layout-manager>

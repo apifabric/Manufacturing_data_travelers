@@ -1,0 +1,44 @@
+<o-form-layout-manager attr="Packaging" mode="tab" title="PACKAGING">
+    <div fxFill fxLayout="column" fxLayoutAlign="start">
+        <o-table 
+            attr="PackagingTable" 
+            service="Packaging" 
+            entity="Packaging" 
+            title="PACKAGING"
+            keys="id"
+            columns="id;device_id;packaging_type;packaging_date" 
+            header-actions="R;D"
+            visible-columns="id;device_id;packaging_type;packaging_date"  
+            sort-columns="id" 
+            query-rows="20" 
+            quick-filter="yes"
+            row-height="medium" 
+            select-all-checkbox="true" 
+            pageable="yes"  
+            auto-adjust="true" 
+            virtual-scroll="yes" 
+            edition-mode="dblclick"
+            horizontal-scroll="yes"
+            show-title="yes"
+            export-button="yes">
+            
+            <o-table-column #id attr="id" title=" id*" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+            
+            <o-table-column attr="device_id" title="device_id">
+    <o-table-cell-renderer-service attr="device_id" 
+        service="Device" entity="DeviceType" columns="id;model_name"
+        parent-keys="id:device_id"
+        value-column="model_name" keys="device_id"
+        visible-columns="model_name" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-column #packaging_type attr="packaging_type" title="packaging_type" editable="no" required="yes" content-align="left"></o-table-column>
+            
+            <o-date-input #packaging_date attr="packaging_date" type="timestamp" label="packaging_date" editable="no" required="no" format="LL" fxFlex="20%" class="form-field"></o-date-input>
+            
+            <o-table-context-menu></o-table-context-menu>
+            <o-table-paginator page-size-options="24;48;96"></o-table-paginator>
+        </o-table>
+    </div>
+</o-form-layout-manager>

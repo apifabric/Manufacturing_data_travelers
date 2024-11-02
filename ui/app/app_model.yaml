@@ -1,0 +1,537 @@
+about:
+  date: November 02, 2024 19:31:54
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+entities:
+  AdhesiveUsage:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: device_assembly_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: lot_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: quantity_used
+      required: true
+      template: integer
+      type: INTEGER
+    description: Logs the usage of adhesives during device assemblies.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Logs the usage of adhesives during device assemblies.
+    label: AdhesiveUsage
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - device_assembly_id
+      name: device_assembly
+      resource: DeviceAssembly
+    - direction: toone
+      fks:
+      - lot_id
+      name: lot
+      resource: Lot
+    type: AdhesiveUsage
+  Defect:
+    columns:
+    - label: ' description*'
+      name: description
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: inspection_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: severity
+      required: true
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Captures details of defects discovered during inspections.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: description
+    home_template: home_template.html
+    info_list: Captures details of defects discovered during inspections.
+    label: Defect
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - inspection_id
+      name: inspection
+      resource: Inspection
+    type: Defect
+  Device:
+    columns:
+    - label: ' model_name*'
+      name: model_name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: serial_number
+      required: true
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Stores information for each device being manufactured.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: model_name
+    home_template: home_template.html
+    info_list: Stores information for each device being manufactured.
+    label: Device
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - device_id
+      name: DeviceAssemblyList
+      resource: DeviceAssembly
+    - direction: tomany
+      fks:
+      - device_id
+      name: InspectionList
+      resource: Inspection
+    - direction: tomany
+      fks:
+      - device_id
+      name: PackagingList
+      resource: Packaging
+    - direction: tomany
+      fks:
+      - device_id
+      name: ReworkList
+      resource: Rework
+    type: Device
+  DeviceAssembly:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: device_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: equipment_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: operator_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: step_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: completed
+      template: text
+      type: BOOLEAN
+    description: Associates devices with equipment and steps for manufacturing.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Associates devices with equipment and steps for manufacturing.
+    label: DeviceAssembly
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - device_assembly_id
+      name: AdhesiveUsageList
+      resource: AdhesiveUsage
+    - direction: toone
+      fks:
+      - device_id
+      name: device
+      resource: Device
+    - direction: toone
+      fks:
+      - equipment_id
+      name: equipment
+      resource: Equipment
+    - direction: toone
+      fks:
+      - operator_id
+      name: operator
+      resource: Operator
+    - direction: toone
+      fks:
+      - step_id
+      name: step
+      resource: ManufacturingStep
+    type: DeviceAssembly
+  Equipment:
+    columns:
+    - label: ' equipment_name*'
+      name: equipment_name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    - name: equipment_id
+      required: true
+      template: text
+      type: VARCHAR
+    description: Stores details of the equipment used during manufacturing.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: equipment_name
+    home_template: home_template.html
+    info_list: Stores details of the equipment used during manufacturing.
+    label: Equipment
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - equipment_id
+      name: DeviceAssemblyList
+      resource: DeviceAssembly
+    type: Equipment
+  Inspection:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: device_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: inspection_date
+      type: DATETIME
+    - name: passed
+      required: true
+      template: text
+      type: BOOLEAN
+    description: Records inspection results for completed assemblies.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Records inspection results for completed assemblies.
+    label: Inspection
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - inspection_id
+      name: DefectList
+      resource: Defect
+    - direction: toone
+      fks:
+      - device_id
+      name: device
+      resource: Device
+    type: Inspection
+  Lot:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: lot_number
+      required: true
+      template: text
+      type: VARCHAR
+    - name: expiration_date
+      required: true
+      type: DATETIME
+    description: Contains lot information for adhesives used during manufacturing.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Contains lot information for adhesives used during manufacturing.
+    label: Lot
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - lot_id
+      name: AdhesiveUsageList
+      resource: AdhesiveUsage
+    type: Lot
+  ManufacturingStep:
+    columns:
+    - label: ' step_name*'
+      name: step_name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: step_order
+      required: true
+      template: integer
+      type: INTEGER
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Tracks different steps involved in the manufacturing process.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: step_name
+    home_template: home_template.html
+    info_list: Tracks different steps involved in the manufacturing process.
+    label: ManufacturingStep
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - step_id
+      name: DeviceAssemblyList
+      resource: DeviceAssembly
+    type: ManufacturingStep
+  Operator:
+    columns:
+    - label: ' first_name*'
+      name: first_name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: last_name
+      required: true
+      template: text
+      type: VARCHAR
+    - name: badge_number
+      required: true
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Stores information of operators involved in the manufacturing process.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: first_name
+    home_template: home_template.html
+    info_list: Stores information of operators involved in the manufacturing process.
+    label: Operator
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - operator_id
+      name: DeviceAssemblyList
+      resource: DeviceAssembly
+    - direction: tomany
+      fks:
+      - operator_id
+      name: ReworkList
+      resource: Rework
+    type: Operator
+  Packaging:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: device_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: packaging_type
+      required: true
+      template: text
+      type: VARCHAR
+    - name: packaging_date
+      type: DATETIME
+    description: Tracks completed devices packaging information.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Tracks completed devices packaging information.
+    label: Packaging
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - packaging_id
+      name: ShipmentList
+      resource: Shipment
+    - direction: toone
+      fks:
+      - device_id
+      name: device
+      resource: Device
+    type: Packaging
+  Rework:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: device_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: operator_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: rework_date
+      type: DATETIME
+    - name: completed
+      template: text
+      type: BOOLEAN
+    description: Logs rework instances when defects are found in inspections.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Logs rework instances when defects are found in inspections.
+    label: Rework
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - device_id
+      name: device
+      resource: Device
+    - direction: toone
+      fks:
+      - operator_id
+      name: operator
+      resource: Operator
+    type: Rework
+  Shipment:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: packaging_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: destination
+      required: true
+      template: text
+      type: VARCHAR
+    - name: shipment_date
+      type: DATETIME
+    description: Logs shipment details for devices ready to be shipped.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Logs shipment details for devices ready to be shipped.
+    label: Shipment
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - packaging_id
+      name: packaging
+      resource: Packaging
+    type: Shipment
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: false
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    mode: tab
+    pick_style: list
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: false

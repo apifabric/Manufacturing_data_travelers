@@ -1,0 +1,119 @@
+// Copy this text, paste to https://dbdiagram.io/d
+// Or, https://databasediagram.com/app
+// Or, view in VSCode with extension: "DBML Live Preview"
+
+Project DBML {
+  Note: '''
+AdhesiveUsage: Logs the usage of adhesives during device assemblies.
+DeviceAssembly: Associates devices with equipment and steps for manufacturing.
+Lot: Contains lot information for adhesives used during manufacturing.
+Defect: Captures details of defects discovered during inspections.
+Inspection: Records inspection results for completed assemblies.
+Device: Stores information for each device being manufactured.
+Equipment: Stores details of the equipment used during manufacturing.
+Operator: Stores information of operators involved in the manufacturing process.
+ManufacturingStep: Tracks different steps involved in the manufacturing process.
+Packaging: Tracks completed devices packaging information.
+Rework: Logs rework instances when defects are found in inspections.
+Shipment: Logs shipment details for devices ready to be shipped.
+'''
+}
+
+Table AdhesiveUsage {
+    id INTEGER [primary key]
+    device_assembly_id INTEGER 
+    lot_id INTEGER 
+    quantity_used INTEGER 
+    }
+
+Table DeviceAssembly {
+    id INTEGER [primary key]
+    device_id INTEGER 
+    equipment_id INTEGER 
+    step_id INTEGER 
+    operator_id INTEGER 
+    completed BOOLEAN 
+    }
+
+Table Lot {
+    id INTEGER [primary key]
+    lot_number VARCHAR 
+    expiration_date DATETIME 
+    }
+
+Table Defect {
+    id INTEGER [primary key]
+    inspection_id INTEGER 
+    description VARCHAR 
+    severity VARCHAR 
+    }
+
+Table Inspection {
+    id INTEGER [primary key]
+    device_id INTEGER 
+    passed BOOLEAN 
+    inspection_date DATETIME 
+    }
+
+Table Device {
+    id INTEGER [primary key]
+    serial_number VARCHAR 
+    model_name VARCHAR 
+    }
+
+Table Equipment {
+    id INTEGER [primary key]
+    equipment_name VARCHAR 
+    equipment_id VARCHAR 
+    }
+
+Table Operator {
+    id INTEGER [primary key]
+    first_name VARCHAR 
+    last_name VARCHAR 
+    badge_number VARCHAR 
+    }
+
+Table ManufacturingStep {
+    id INTEGER [primary key]
+    step_name VARCHAR 
+    step_order INTEGER 
+    }
+
+Table Packaging {
+    id INTEGER [primary key]
+    device_id INTEGER 
+    packaging_type VARCHAR 
+    packaging_date DATETIME 
+    }
+
+Table Rework {
+    id INTEGER [primary key]
+    device_id INTEGER 
+    operator_id INTEGER 
+    rework_date DATETIME 
+    completed BOOLEAN 
+    }
+
+Table Shipment {
+    id INTEGER [primary key]
+    packaging_id INTEGER 
+    destination VARCHAR 
+    shipment_date DATETIME 
+    }
+
+
+
+// Relationships
+    Ref: AdhesiveUsage.(device_assembly_id) < DeviceAssembly.(id)
+    Ref: AdhesiveUsage.(lot_id) < Lot.(id)
+    Ref: DeviceAssembly.(device_id) < Device.(id)
+    Ref: DeviceAssembly.(equipment_id) < Equipment.(id)
+    Ref: DeviceAssembly.(operator_id) < Operator.(id)
+    Ref: DeviceAssembly.(step_id) < ManufacturingStep.(id)
+    Ref: Defect.(inspection_id) < Inspection.(id)
+    Ref: Inspection.(device_id) < Device.(id)
+    Ref: Packaging.(device_id) < Device.(id)
+    Ref: Rework.(device_id) < Device.(id)
+    Ref: Rework.(operator_id) < Operator.(id)
+    Ref: Shipment.(packaging_id) < Packaging.(id)

@@ -1,0 +1,53 @@
+<o-form-layout-manager attr="Rework" mode="tab" title="REWORK">
+    <div fxFill fxLayout="column" fxLayoutAlign="start">
+        <o-table 
+            attr="ReworkTable" 
+            service="Rework" 
+            entity="Rework" 
+            title="REWORK"
+            keys="id"
+            columns="id;device_id;operator_id;rework_date;completed" 
+            header-actions="R;D"
+            visible-columns="id;device_id;operator_id;rework_date;completed"  
+            sort-columns="id" 
+            query-rows="20" 
+            quick-filter="yes"
+            row-height="medium" 
+            select-all-checkbox="true" 
+            pageable="yes"  
+            auto-adjust="true" 
+            virtual-scroll="yes" 
+            edition-mode="dblclick"
+            horizontal-scroll="yes"
+            show-title="yes"
+            export-button="yes">
+            
+            <o-table-column #id attr="id" title=" id*" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+            
+            <o-table-column attr="device_id" title="device_id">
+    <o-table-cell-renderer-service attr="device_id" 
+        service="Device" entity="DeviceType" columns="id;model_name"
+        parent-keys="id:device_id"
+        value-column="model_name" keys="device_id"
+        visible-columns="model_name" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-column attr="operator_id" title="operator_id">
+    <o-table-cell-renderer-service attr="operator_id" 
+        service="Operator" entity="OperatorType" columns="id;first_name"
+        parent-keys="id:operator_id"
+        value-column="first_name" keys="operator_id"
+        visible-columns="first_name" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-date-input #rework_date attr="rework_date" type="timestamp" label="rework_date" editable="no" required="no" format="LL" fxFlex="20%" class="form-field"></o-date-input>
+            
+            <o-table-column #completed attr="completed" title="completed" editable="no" required="no" content-align="left"></o-table-column>
+            
+            <o-table-context-menu></o-table-context-menu>
+            <o-table-paginator page-size-options="24;48;96"></o-table-paginator>
+        </o-table>
+    </div>
+</o-form-layout-manager>

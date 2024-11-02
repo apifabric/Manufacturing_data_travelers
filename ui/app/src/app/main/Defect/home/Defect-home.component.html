@@ -1,0 +1,44 @@
+<o-form-layout-manager attr="Defect" mode="tab" title="DEFECT">
+    <div fxFill fxLayout="column" fxLayoutAlign="start">
+        <o-table 
+            attr="DefectTable" 
+            service="Defect" 
+            entity="Defect" 
+            title="DEFECT"
+            keys="id"
+            columns="description;inspection_id;severity;id" 
+            header-actions="R;D"
+            visible-columns="description;inspection_id;severity;id"  
+            sort-columns="description" 
+            query-rows="20" 
+            quick-filter="yes"
+            row-height="medium" 
+            select-all-checkbox="true" 
+            pageable="yes"  
+            auto-adjust="true" 
+            virtual-scroll="yes" 
+            edition-mode="dblclick"
+            horizontal-scroll="yes"
+            show-title="yes"
+            export-button="yes">
+            
+            <o-table-column #description attr="description" title=" description*" editable="no" required="yes" content-align="left"></o-table-column>
+            
+            <o-table-column attr="inspection_id" title="inspection_id">
+    <o-table-cell-renderer-service attr="inspection_id" 
+        service="Inspection" entity="InspectionType" columns="id;id"
+        parent-keys="id:inspection_id"
+        value-column="id" keys="inspection_id"
+        visible-columns="id" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-column #severity attr="severity" title="severity" editable="no" required="yes" content-align="left"></o-table-column>
+            
+            <o-table-column #id attr="id" title="id" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+            
+            <o-table-context-menu></o-table-context-menu>
+            <o-table-paginator page-size-options="24;48;96"></o-table-paginator>
+        </o-table>
+    </div>
+</o-form-layout-manager>

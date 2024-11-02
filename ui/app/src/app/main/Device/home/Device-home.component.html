@@ -1,0 +1,35 @@
+<o-form-layout-manager attr="Device" mode="tab" title="DEVICE">
+    <div fxFill fxLayout="column" fxLayoutAlign="start">
+        <o-table 
+            attr="DeviceTable" 
+            service="Device" 
+            entity="Device" 
+            title="DEVICE"
+            keys="id"
+            columns="model_name;serial_number;id" 
+            header-actions="R;D"
+            visible-columns="model_name;serial_number;id"  
+            sort-columns="model_name" 
+            query-rows="20" 
+            quick-filter="yes"
+            row-height="medium" 
+            select-all-checkbox="true" 
+            pageable="yes"  
+            auto-adjust="true" 
+            virtual-scroll="yes" 
+            edition-mode="dblclick"
+            horizontal-scroll="yes"
+            show-title="yes"
+            export-button="yes">
+            
+            <o-table-column #model_name attr="model_name" title=" model_name*" editable="no" required="yes" content-align="left"></o-table-column>
+            
+            <o-table-column #serial_number attr="serial_number" title="serial_number" editable="no" required="yes" content-align="left"></o-table-column>
+            
+            <o-table-column #id attr="id" title="id" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+            
+            <o-table-context-menu></o-table-context-menu>
+            <o-table-paginator page-size-options="24;48;96"></o-table-paginator>
+        </o-table>
+    </div>
+</o-form-layout-manager>

@@ -1,0 +1,105 @@
+<div class="container">
+<o-form-container breadcrumb="yes" breadcrumb-label-columns="step_name" breadcrumb-separator=", " class="fill-form">
+      <o-form #form attr="ManufacturingStep_form_edit" 
+        service="ManufacturingStep" 
+        entity="ManufacturingStep" 
+        fxLayout="column" 
+        show-header="yes" 
+        header-actions="R;I;U;D"
+        #oDetailForm keys="id" 
+        keys-sql-types="INTEGER" 
+        show-header-navigation="yes"
+        (onDataLoaded)="onDataLoaded($event)">
+
+  <o-row attr="row1" layout-align="start stretch">
+    <div fxLayout="row wrap" fxLayoutAlign="start start" fxFlex fxLayoutGap="14px">
+      
+      <o-text-input #step_name attr="step_name" label=" step_name*" enabled="yes" required="yes" fxFlex="20%" class="form-field"></o-text-input>
+      
+      <o-integer-input #step_order attr="step_order" label="step_order" type="integer" editable="no" required="yes" ></o-integer-input>
+      
+      <o-integer-input #id attr="id" label="id" type="integer" editable="no" required="no" ></o-integer-input>
+      
+    </div>
+  </o-row>
+      
+      <mat-tab-group fxFill>
+        
+        <mat-tab label="DEVICEASSEMBLY-step_id">
+    <div layout-padding>
+      <o-table 
+        attr="DeviceAssemblyTable" 
+        service="DeviceAssembly" 
+        entity="DeviceAssembly" 
+        keys="id"
+        parent-keys="step_id:id"
+        columns="id;device_id;equipment_id;operator_id;step_id;completed"  
+        horizontal-scroll="yes"
+        detail-form-route="DeviceAssembly" 
+        edit-form-route="DeviceAssembly"
+        visible-columns="id;device_id;equipment_id;operator_id;step_id;completed"  
+        sort-columns="id" 
+        query-rows="25" 
+        quick-filter="yes"
+        row-height="medium" 
+        select-all-checkbox="true" 
+        pageable="yes"  
+        auto-adjust="true" 
+        virtual-scroll="yes" 
+        insert-button="yes" 
+        delete-button="yes" 
+        fixed-header="true" 
+        class="vertical-padding-8"
+        edition-mode="dblclick" 
+        horizontal-scroll="yes" class="fill-form">
+        
+          <o-table-column #id attr="id" title=" id*" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+        
+          <o-table-column attr="device_id" title="device_id">
+    <o-table-cell-renderer-service attr="device_id" 
+        service="Device" entity="DeviceType" columns="id;model_name"
+        parent-keys="id:device_id"
+        value-column="model_name" keys="device_id"
+        visible-columns="model_name" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+        
+          <o-table-column attr="equipment_id" title="equipment_id">
+    <o-table-cell-renderer-service attr="equipment_id" 
+        service="Equipment" entity="EquipmentType" columns="id;equipment_name"
+        parent-keys="id:equipment_id"
+        value-column="equipment_name" keys="equipment_id"
+        visible-columns="equipment_name" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+        
+          <o-table-column attr="operator_id" title="operator_id">
+    <o-table-cell-renderer-service attr="operator_id" 
+        service="Operator" entity="OperatorType" columns="id;first_name"
+        parent-keys="id:operator_id"
+        value-column="first_name" keys="operator_id"
+        visible-columns="first_name" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+        
+          <o-table-column attr="step_id" title="step_id">
+    <o-table-cell-renderer-service attr="step_id" 
+        service="ManufacturingStep" entity="ManufacturingStepType" columns="id;step_name"
+        parent-keys="id:step_id"
+        value-column="step_name" keys="step_id"
+        visible-columns="step_name" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+        
+          <o-table-column #completed attr="completed" title="completed" editable="no" required="no" content-align="left"></o-table-column>
+        
+        <o-table-paginator page-size-options="25;50;100"></o-table-paginator>
+      </o-table>
+    </div>
+</mat-tab>
+        
+      </mat-tab-group>
+      
+    </o-form>
+  </o-form-container>
+</div>

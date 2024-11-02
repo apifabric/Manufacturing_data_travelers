@@ -1,0 +1,1 @@
+A manufacturing data traveler that has input sections for device serial number, equipment ID's used, lot and expiration information for adhesives, and operator sign offs for each of the manufacturing assembly steps

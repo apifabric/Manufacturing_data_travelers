@@ -1,0 +1,363 @@
+about:
+  date: November 02, 2024 19:31:54
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 12
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  AdhesiveUsage:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: device_assembly_id
+      required: true
+    - name: lot_id
+      required: true
+    - name: quantity_used
+      required: true
+    description: Logs the usage of adhesives during device assemblies.
+    info_list: Logs the usage of adhesives during device assemblies.
+    tab_groups:
+    - direction: toone
+      fks:
+      - device_assembly_id
+      name: device_assembly
+      resource: DeviceAssembly
+    - direction: toone
+      fks:
+      - lot_id
+      name: lot
+      resource: Lot
+    type: AdhesiveUsage
+    user_key: id
+  Defect:
+    attributes:
+    - label: ' description*'
+      name: description
+      required: true
+      search: true
+      sort: true
+    - name: inspection_id
+      required: true
+    - name: severity
+      required: true
+    - name: id
+    description: Captures details of defects discovered during inspections.
+    info_list: Captures details of defects discovered during inspections.
+    tab_groups:
+    - direction: toone
+      fks:
+      - inspection_id
+      name: inspection
+      resource: Inspection
+    type: Defect
+    user_key: description
+  Device:
+    attributes:
+    - label: ' model_name*'
+      name: model_name
+      required: true
+      search: true
+      sort: true
+    - name: serial_number
+      required: true
+    - name: id
+    description: Stores information for each device being manufactured.
+    info_list: Stores information for each device being manufactured.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - device_id
+      name: DeviceAssemblyList
+      resource: DeviceAssembly
+    - direction: tomany
+      fks:
+      - device_id
+      name: InspectionList
+      resource: Inspection
+    - direction: tomany
+      fks:
+      - device_id
+      name: PackagingList
+      resource: Packaging
+    - direction: tomany
+      fks:
+      - device_id
+      name: ReworkList
+      resource: Rework
+    type: Device
+    user_key: model_name
+  DeviceAssembly:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: device_id
+      required: true
+    - name: equipment_id
+      required: true
+    - name: operator_id
+      required: true
+    - name: step_id
+      required: true
+    - name: completed
+    description: Associates devices with equipment and steps for manufacturing.
+    info_list: Associates devices with equipment and steps for manufacturing.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - device_assembly_id
+      name: AdhesiveUsageList
+      resource: AdhesiveUsage
+    - direction: toone
+      fks:
+      - device_id
+      name: device
+      resource: Device
+    - direction: toone
+      fks:
+      - equipment_id
+      name: equipment
+      resource: Equipment
+    - direction: toone
+      fks:
+      - operator_id
+      name: operator
+      resource: Operator
+    - direction: toone
+      fks:
+      - step_id
+      name: step
+      resource: ManufacturingStep
+    type: DeviceAssembly
+    user_key: id
+  Equipment:
+    attributes:
+    - label: ' equipment_name*'
+      name: equipment_name
+      required: true
+      search: true
+      sort: true
+    - name: id
+    - name: equipment_id
+      required: true
+    description: Stores details of the equipment used during manufacturing.
+    info_list: Stores details of the equipment used during manufacturing.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - equipment_id
+      name: DeviceAssemblyList
+      resource: DeviceAssembly
+    type: Equipment
+    user_key: equipment_name
+  Inspection:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: device_id
+      required: true
+    - name: inspection_date
+      type: DATETIME
+    - name: passed
+      required: true
+    description: Records inspection results for completed assemblies.
+    info_list: Records inspection results for completed assemblies.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - inspection_id
+      name: DefectList
+      resource: Defect
+    - direction: toone
+      fks:
+      - device_id
+      name: device
+      resource: Device
+    type: Inspection
+    user_key: id
+  Lot:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: lot_number
+      required: true
+    - name: expiration_date
+      required: true
+      type: DATETIME
+    description: Contains lot information for adhesives used during manufacturing.
+    info_list: Contains lot information for adhesives used during manufacturing.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - lot_id
+      name: AdhesiveUsageList
+      resource: AdhesiveUsage
+    type: Lot
+    user_key: id
+  ManufacturingStep:
+    attributes:
+    - label: ' step_name*'
+      name: step_name
+      required: true
+      search: true
+      sort: true
+    - name: step_order
+      required: true
+    - name: id
+    description: Tracks different steps involved in the manufacturing process.
+    info_list: Tracks different steps involved in the manufacturing process.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - step_id
+      name: DeviceAssemblyList
+      resource: DeviceAssembly
+    type: ManufacturingStep
+    user_key: step_name
+  Operator:
+    attributes:
+    - label: ' first_name*'
+      name: first_name
+      required: true
+      search: true
+      sort: true
+    - name: last_name
+      required: true
+    - name: badge_number
+      required: true
+    - name: id
+    description: Stores information of operators involved in the manufacturing process.
+    info_list: Stores information of operators involved in the manufacturing process.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - operator_id
+      name: DeviceAssemblyList
+      resource: DeviceAssembly
+    - direction: tomany
+      fks:
+      - operator_id
+      name: ReworkList
+      resource: Rework
+    type: Operator
+    user_key: first_name
+  Packaging:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: device_id
+      required: true
+    - name: packaging_type
+      required: true
+    - name: packaging_date
+      type: DATETIME
+    description: Tracks completed devices packaging information.
+    info_list: Tracks completed devices packaging information.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - packaging_id
+      name: ShipmentList
+      resource: Shipment
+    - direction: toone
+      fks:
+      - device_id
+      name: device
+      resource: Device
+    type: Packaging
+    user_key: id
+  Rework:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: device_id
+      required: true
+    - name: operator_id
+      required: true
+    - name: rework_date
+      type: DATETIME
+    - name: completed
+    description: Logs rework instances when defects are found in inspections.
+    info_list: Logs rework instances when defects are found in inspections.
+    tab_groups:
+    - direction: toone
+      fks:
+      - device_id
+      name: device
+      resource: Device
+    - direction: toone
+      fks:
+      - operator_id
+      name: operator
+      resource: Operator
+    type: Rework
+    user_key: id
+  Shipment:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: packaging_id
+      required: true
+    - name: destination
+      required: true
+    - name: shipment_date
+      type: DATETIME
+    description: Logs shipment details for devices ready to be shipped.
+    info_list: Logs shipment details for devices ready to be shipped.
+    tab_groups:
+    - direction: toone
+      fks:
+      - packaging_id
+      name: packaging
+      resource: Packaging
+    type: Shipment
+    user_key: id
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'
